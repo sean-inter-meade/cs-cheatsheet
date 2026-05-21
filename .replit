@@ -1,7 +1,7 @@
-run = "if [ ! -d .venv ]; then uv venv .venv; fi && uv pip install -r requirements.txt --python .venv/bin/python && .venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
-
+run = "uv sync && .venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
 entrypoint = "backend/app.py"
 modules = ["python-3.11"]
+disableGuessImports = true
 
 [nix]
 channel = "stable-24_05"
@@ -14,7 +14,8 @@ PIP_USER = "0"
 [deployment]
 run = ["sh", "-c", ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
 deploymentTarget = "cloudrun"
-build = ["sh", "-c", "rm -rf .venv && uv venv .venv && uv pip install -r requirements.txt --python .venv/bin/python"]
+# Force uv to synchronize directly using your pyproject.toml and uv.lock files safely
+build = ["sh", "-c", "uv sync --frozen"]
 
 [[ports]]
 localPort = 8080
@@ -46,7 +47,3 @@ waitForPort = 8080
 
 [agent]
 expertMode = true
-
-[postMerge]
-path = "scripts/post-merge.sh"
-timeoutMs = 180000

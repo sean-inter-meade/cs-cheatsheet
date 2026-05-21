@@ -1,50 +1,16 @@
-run = "uv sync && .venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
+run = "PYTHONPATH=.pythonlibs/lib/python3.11/site-packages python -m uvicorn backend.app:app --host 0.0.0.0 --port 8080"
 entrypoint = "backend/app.py"
 modules = ["python-3.11"]
 disableGuessImports = true
 
 [nix]
 channel = "stable-24_05"
-packages = ["libxcrypt", "libyaml", "gcc", "uv"]
+packages = ["libxcrypt", "libyaml", "gcc"]
 
 [env]
-PYTHONPATH = "/home/runner/${REPL_SLUG}"
+PYTHONPATH = "/home/runner/${REPL_SLUG}:.pythonlibs/lib/python3.11/site-packages"
 PIP_USER = "0"
-UV_NO_INSTALL_WORKSPACE = "1"
-UV_VERBOSE = "1"
 
 [deployment]
-build = ["sh", "-c", "rm -rf .venv && uv sync"]
-run = ["sh", "-c", ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
+run = ["sh", "-c", "python -m uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
 deploymentTarget = "cloudrun"
-
-[[ports]]
-localPort = 8080
-externalPort = 80
-
-[workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
-waitForPort = 8080
-
-[agent]
-expertMode = true

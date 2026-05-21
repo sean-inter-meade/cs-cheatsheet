@@ -64,6 +64,7 @@ app.add_middleware(
 app.include_router(router)
 
 
+# startup
 @app.on_event("startup")
 async def on_startup() -> None:
     logger.info("CS Cheatsheet started")
@@ -72,6 +73,8 @@ async def on_startup() -> None:
     else:
         logger.info("INTERCOM_API_TOKEN configured.")
     if not OPENAI_API_KEY:
-        logger.warning("OPENAI_API_KEY is not set. Problem analysis will use fallback mode.")
+        logger.warning(
+            "OPENAI_API_KEY is not set. Problem analysis will use fallback mode."
+        )
     else:
         logger.info("OPENAI_API_KEY configured.")

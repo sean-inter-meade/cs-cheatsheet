@@ -10,10 +10,11 @@ packages = ["libxcrypt", "libyaml", "gcc", "uv"]
 [env]
 PYTHONPATH = "/home/runner/${REPL_SLUG}"
 PIP_USER = "0"
-# 👇 THIS IS THE MAGIC VARIABLE THAT BYPASSES THE SETUTOOLS LAYOUT ERROR
 UV_NO_INSTALL_WORKSPACE = "1"
+UV_VERBOSE = "1"
 
 [deployment]
+build = ["sh", "-c", "rm -rf .venv && uv sync"]
 run = ["sh", "-c", ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
 deploymentTarget = "cloudrun"
 

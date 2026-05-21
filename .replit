@@ -44,6 +44,13 @@ task = "shell.exec"
 args = ".venv/bin/python -m uvicorn backend.app:app --host 0.0.0.0 --port 8080"
 waitForPort = 8080
 
+[packager]
+language = "python3"
+
+[packager.features]
+enabledForHosting = false
+guessImports = false
+
 [agent]
 expertMode = true
 

@@ -10,12 +10,12 @@ packages = ["libxcrypt", "libyaml", "gcc", "uv"]
 [env]
 PYTHONPATH = "/home/runner/${REPL_SLUG}"
 PIP_USER = "0"
+# 👇 THIS IS THE MAGIC VARIABLE THAT BYPASSES THE SETUTOOLS LAYOUT ERROR
+UV_NO_INSTALL_WORKSPACE = "1"
 
 [deployment]
 run = ["sh", "-c", ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
 deploymentTarget = "cloudrun"
-# Force uv to synchronize directly using your pyproject.toml and uv.lock files safely
-build = ["sh", "-c", "uv sync --frozen"]
 
 [[ports]]
 localPort = 8080

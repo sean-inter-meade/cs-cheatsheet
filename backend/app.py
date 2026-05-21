@@ -64,7 +64,6 @@ app.add_middleware(
 app.include_router(router)
 
 
-# startup
 @app.on_event("startup")
 async def on_startup() -> None:
     logger.info("CS Cheatsheet started")

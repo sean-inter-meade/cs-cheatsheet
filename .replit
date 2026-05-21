@@ -1,0 +1,52 @@
+run = "if [ ! -d .venv ]; then uv venv .venv; fi && uv pip install -r requirements.txt --python .venv/bin/python && .venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
+
+entrypoint = "backend/app.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["libxcrypt", "libyaml", "gcc", "uv"]
+
+[env]
+PYTHONPATH = "/home/runner/${REPL_SLUG}"
+PIP_USER = "0"
+
+[deployment]
+run = ["sh", "-c", ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "rm -rf .venv && uv venv .venv && uv pip install -r requirements.txt --python .venv/bin/python"]
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = ".venv/bin/uvicorn backend.app:app --host 0.0.0.0 --port 8080"
+waitForPort = 8080
+
+[agent]
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 180000

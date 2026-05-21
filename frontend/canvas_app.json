@@ -1,0 +1,24 @@
+{
+  "app_name": "CS Cheatsheet",
+  "description": "Instant customer context for CS agents: user profile, CDAs, AI-extracted problem summaries, and open tickets.",
+  "location": "conversation-sidebar",
+  "webhooks": {
+    "initialize": {
+      "url": "https://YOUR_DOMAIN/canvas/initialize",
+      "description": "Called when the app loads in the Inbox sidebar"
+    },
+    "submit": {
+      "url": "https://YOUR_DOMAIN/canvas/submit",
+      "description": "Called when the agent interacts with the app"
+    }
+  },
+  "capabilities": ["conversation-context"],
+  "setup_notes": [
+    "1. Register this app in the Intercom Developer Hub",
+    "2. Set the webhook URLs to your FastAPI backend",
+    "3. Enable conversation-context capability to receive conversation_id",
+    "4. Install in your Intercom workspace",
+    "5. Set INTERCOM_API_TOKEN, OPENAI_API_KEY in your .env",
+    "6. Adjust CDA_* env vars if your attribute names differ from defaults"
+  ]
+}

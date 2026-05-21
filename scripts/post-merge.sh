@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-uv pip install -r requirements.txt --python .venv/bin/python
+uv pip install --target .pythonlibs/lib/python3.11/site-packages -r requirements.txt

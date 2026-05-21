@@ -10,6 +10,9 @@ packages = ["libxcrypt", "libyaml", "gcc"]
 [env]
 PYTHONPATH = "/home/runner/${REPL_SLUG}:.pythonlibs/lib/python3.11/site-packages"
 PIP_USER = "0"
+# 👇 THESE TWO LINES FORCE PIP TO INSTALL LOCALLY WITHOUT NEEDING FLAGS
+PIP_TARGET = ".pythonlibs/lib/python3.11/site-packages"
+PYTHONUSERBASE = "/home/runner/${REPL_SLUG}/.pythonlibs"
 
 [deployment]
 run = ["sh", "-c", "python -m uvicorn backend.app:app --host 0.0.0.0 --port 8080"]

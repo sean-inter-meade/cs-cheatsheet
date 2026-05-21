@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-uv sync
+uv pip install -r requirements.txt --python .venv/bin/python
